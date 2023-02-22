@@ -1,22 +1,15 @@
-import logging
-
 import scrapy
 
-from pep_parse.configs import configure_logging
 from pep_parse.items import PepParseItem
-
-configure_logging()
-logger = logging.getLogger(__name__)
 
 
 class PepSpider(scrapy.Spider):
     name = 'pep'
-    allowed_domains = ('peps.python.org',)
     start_urls = ['https://peps.python.org/']
 
     def parse(self, response, **kwargs):
         for link in response.css(
-                'tbody tr a[href^="pep-"]'
+            'tbody tr a[href^="pep-"]'
         ):
             yield response.follow(
                 link, callback=self.parse_pep

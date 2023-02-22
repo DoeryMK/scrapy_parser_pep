@@ -2,33 +2,37 @@ import csv
 import datetime as dt
 from collections import defaultdict
 
-from pep_parse.constants import (BASE_DIR, DATETIME_FORMAT, RESULTS,
-                                 SUMMARY_FILE_NAME, SUMMARY_TABLE_BOTTOM,
-                                 SUMMARY_TABLE_HEADER)
+from pep_parse.settings import (BASE_DIR, CSV_FILE_FORMAT, DATETIME_FORMAT,
+                                RESULTS, SUMMARY_FILE_NAME,
+                                SUMMARY_TABLE_BOTTOM, SUMMARY_TABLE_HEADER)
 
 
 class PepParsePipeline:
 
+    def __init__(self):
+        self.results_dir = BASE_DIR / RESULTS
+        self.results_dir.mkdir(exist_ok=True)
+        self.statuses = {}
+
     def open_spider(self, spider):
-        self.statuses_dict = defaultdict(int)
+        self.statuses = defaultdict(int)
 
     def close_spider(self, spider):
-        results_dir = BASE_DIR / RESULTS
-        results_dir.mkdir(exist_ok=True)
         now = dt.datetime.now()
         now_formatted = now.strftime(DATETIME_FORMAT)
-        file_name = f'{SUMMARY_FILE_NAME}_{now_formatted}.csv'
-        file_path = results_dir / file_name
+        file_name = f'{SUMMARY_FILE_NAME}_{now_formatted}.{CSV_FILE_FORMAT}'
+        file_path = self.results_dir / file_name
         with open(file_path, mode='w', encoding='utf-8') as csvfile:
             csv.writer(
                 csvfile,
-                dialect=csv.unix_dialect
+                dialect=csv.unix_dialect,
+                quoting=csv.QUOTE_NONE,
             ).writerows([
                 SUMMARY_TABLE_HEADER,
-                *self.statuses_dict.items(),
-                (SUMMARY_TABLE_BOTTOM, sum(self.statuses_dict.values())),
+                *self.statuses.items(),
+                (SUMMARY_TABLE_BOTTOM, sum(self.statuses.values())),
             ])
 
     def process_item(self, item, spider):
-        self.statuses_dict[item.get('status')] += 1
+        self.statuses[item.get('status')] += 1
         return item
