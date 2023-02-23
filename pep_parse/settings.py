@@ -1,9 +1,10 @@
-import datetime as dt
 from pathlib import Path
 
 BOT_NAME = 'pep_parse'
 
 SPIDER_MODULES = ['pep_parse.spiders']
+
+PEP_SPIDER_URL = 'peps.python.org'
 
 ROBOTSTXT_OBEY = True
 
@@ -14,12 +15,7 @@ RESULTS_DIR = BASE_DIR / RESULTS
 
 DATETIME_FORMAT = '%Y-%m-%d_%H-%M-%S'
 
-now = dt.datetime.now()
-now_formatted = now.strftime(DATETIME_FORMAT)
-
-LOGS = 'logs'
-LOG_DIR = BASE_DIR / LOGS
-LOG_FILE = LOG_DIR / 'parser.logs'
+LOG_FILE = RESULTS_DIR / 'parser.logs'
 LOG_FORMAT = '%(asctime)s - [%(levelname)s] - %(message)s'
 LOG_LEVEL = 'DEBUG'
 LOG_FILE_APPEND = True
@@ -27,7 +23,6 @@ LOG_FILE_APPEND = True
 FILE_FORMAT = 'csv'
 
 SUMMARY_NAME = 'status_summary'
-SUMMARY_FILE_NAME = f'{SUMMARY_NAME}_{now_formatted}.{FILE_FORMAT}'
 SUMMARY_TABLE_HEADER = ('Status', 'Quantity')
 SUMMARY_TABLE_BOTTOM = 'Total'
 

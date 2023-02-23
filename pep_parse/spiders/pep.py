@@ -1,14 +1,13 @@
 import scrapy
 
 from pep_parse.items import PepParseItem
-from pep_parse.settings import LOG_DIR
+from pep_parse.settings import PEP_SPIDER_URL
 
 
 class PepSpider(scrapy.Spider):
     name = 'pep'
-    allowed_domains = ('peps.python.org',)
-    start_urls = [f'https://{allowed_domains[0]}/']
-    LOG_DIR.mkdir(exist_ok=True)
+    allowed_domains = (PEP_SPIDER_URL,)
+    start_urls = [f'https://{PEP_SPIDER_URL}/']
 
     def parse(self, response, **kwargs):
         for link in response.css(
