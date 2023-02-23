@@ -12,7 +12,6 @@ class PepParsePipeline:
     def __init__(self):
         self.results_dir = BASE_DIR / RESULTS
         self.results_dir.mkdir(exist_ok=True)
-        self.statuses = {}
 
     def open_spider(self, spider):
         self.statuses = defaultdict(int)

@@ -1,11 +1,13 @@
 import scrapy
 
 from pep_parse.items import PepParseItem
+from pep_parse.settings import LOG_DIR
 
 
 class PepSpider(scrapy.Spider):
     name = 'pep'
     start_urls = ['https://peps.python.org/']
+    LOG_DIR.mkdir(exist_ok=True)
 
     def parse(self, response, **kwargs):
         for link in response.css(
