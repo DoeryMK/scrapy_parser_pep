@@ -1,5 +1,4 @@
 import csv
-import datetime as dt
 from collections import defaultdict
 
 from pep_parse.settings import (BASE_DIR, RESULTS, SUMMARY_FILE_NAME,
