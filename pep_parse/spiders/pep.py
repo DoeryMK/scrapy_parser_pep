@@ -6,7 +6,8 @@ from pep_parse.settings import LOG_DIR
 
 class PepSpider(scrapy.Spider):
     name = 'pep'
-    start_urls = ['https://peps.python.org/']
+    allowed_domains = ('peps.python.org',)
+    start_urls = [f'https://{allowed_domains[0]}/']
     LOG_DIR.mkdir(exist_ok=True)
 
     def parse(self, response, **kwargs):
